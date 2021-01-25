@@ -6,8 +6,7 @@ class Gate {
   }
   drawUI() {
     this.ctx.fillStyle = "#4e5251";
-    this.ctx.rect(this.x, this.y, 100, 50);
-    this.ctx.fill();
+    this.ctx.fillRect(this.x, this.y, 100, 50);
   }
   drawText() {
     this.ctx.fillStyle = "#c2c2c2";
