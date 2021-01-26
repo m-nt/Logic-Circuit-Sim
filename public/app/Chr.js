@@ -7,6 +7,14 @@ class Gate {
   drawUI() {
     this.ctx.fillStyle = "#4e5251";
     this.ctx.fillRect(this.x, this.y, 100, 50);
+    this.ctx.fillStyle = "#67cf44";
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y + 12, 7, 0, 2 * Math.PI, false);
+    this.ctx.fill();
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "#c94242";
+    this.ctx.arc(this.x, this.y + 37, 7, 0, 2 * Math.PI, false);
+    this.ctx.fill();
   }
   drawText() {
     this.ctx.fillStyle = "#c2c2c2";

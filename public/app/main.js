@@ -23,7 +23,10 @@ function renderTexts(e) {
 let s = 30;
 window.addEventListener("click", (e) => {
   s += 10;
-  Hierarchy[0].updating(e.clientX, e.clientY);
+  const rect = c.getBoundingClientRect();
+  let x = e.clientX - rect.x;
+  let y = e.clientY - rect.y;
+  Hierarchy[0].updating(x, y);
   console.log(Hierarchy[0]);
 });
 
