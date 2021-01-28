@@ -1,39 +1,43 @@
 import Gate from "/app/Chr.js";
 var c = /** @type {HTMLCanvasElement} */ (document.getElementById("Main"));
 var ctx = c.getContext("2d");
+const rect = c.getBoundingClientRect();
 
 let HEIGHT = 550;
 let WIDTH = 1100;
 
-let f1 = new Gate(ctx, 50, 150);
-let f2 = new Gate(ctx, 50, 300);
-let f3 = new Gate(ctx, 200, 300);
+let f1 = new Gate(ctx, 50, 150, rect);
+let f2 = new Gate(ctx, 50, 300, rect);
+let f3 = new Gate(ctx, 200, 300, rect);
 
 let Hierarchy = [f1, f2, f3];
-function renderUI(e) {
+function renderUI() {
   Hierarchy.forEach((items) => {
     items.drawUI();
   });
 }
-function renderTexts(e) {
+function renderTexts() {
   Hierarchy.forEach((items) => {
     items.drawText();
   });
 }
-let s = 30;
-window.addEventListener("click", (e) => {
-  s += 10;
-  const rect = c.getBoundingClientRect();
-  let x = e.clientX - rect.x;
-  let y = e.clientY - rect.y;
-  Hierarchy[0].updating(x, y);
-  console.log(Hierarchy[0]);
-});
+c.onmousemove = (e) => {
+  e.preventDefault();
+  Hierarchy[0].e = e;
+};
+c.onmousedown = (e) => {
+  Hierarchy[0].e = e;
+  Hierarchy[0].isDraging = true;
+};
+c.onmouseup = (e) => {
+  Hierarchy[0].e = null;
+  Hierarchy[0].isDraging = false;
+};
 
 c.height = HEIGHT;
 c.width = WIDTH;
 
-function Render_Pipeline(e) {
+function Render_Pipeline() {
   ctx.clearRect(0, 0, c.width, c.height);
   renderUI();
   renderTexts();
