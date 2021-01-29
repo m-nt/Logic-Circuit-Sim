@@ -4,7 +4,7 @@ class Gate {
     this.y = y;
     this.ctx = /** @type {CanvasRenderingContext2D} */ (ctx);
     this.isDraging = isDraging || false;
-    this.rect = rect;
+    this.rect = rect || null;
     this.e;
   }
   drawUI() {
@@ -13,7 +13,6 @@ class Gate {
     if (this.isDraging) {
       x = this.x = this.e.clientX - this.rect.x - 50;
       y = this.y = this.e.clientY - this.rect.y - 25;
-      console.log("is draging");
     } else {
       x = this.x;
       y = this.y;
@@ -32,7 +31,7 @@ class Gate {
   drawText() {
     this.ctx.fillStyle = "#c2c2c2";
     this.ctx.font = "30px Arial";
-    this.ctx.fillText("AND", this.x + 20, this.y + 35, 100);
+    this.ctx.fillText(":)", this.x + 20, this.y + 35, 100);
   }
 }
 
