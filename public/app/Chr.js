@@ -1,15 +1,17 @@
 class Gate {
-  constructor(ctx, x, y, rect, isDraging) {
+  constructor(ctx, x, y, isDraging, name, e, rect, ofx, ofy) {
+    this.type = "Gate";
+    this.name = name || "none";
     this.x = x;
     this.y = y;
     this.w = 100;
     this.h = 50;
-    this.ofx = 0;
-    this.ofy = 0;
+    this.ofx = ofx || 0;
+    this.ofy = ofy || 0;
     this.ctx = /** @type {CanvasRenderingContext2D} */ (ctx);
     this.isDraging = isDraging || false;
     this.rect = rect || null;
-    this.e;
+    this.e = e || null;
   }
   drawUI() {
     let { x, y } = this.PositionOnDetect();
@@ -17,18 +19,29 @@ class Gate {
     this.ctx.fillRect(x, y, this.w, this.h);
     this.ctx.fillStyle = "#a0a6a8";
     this.ctx.beginPath();
-    this.ctx.arc(x, y + 12, 7, 0, 2 * Math.PI, false);
+    this.ctx.arc(x - 5, y + 12, 7, 0, 2 * Math.PI, false);
     this.ctx.fill();
     this.ctx.beginPath();
     this.ctx.fillStyle = "#a0a6a8";
-    this.ctx.arc(x, y + 37, 7, 0, 2 * Math.PI, false);
+    this.ctx.arc(x - 5, y + 37, 7, 0, 2 * Math.PI, false);
+    this.ctx.fill();
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "#a0a6a8";
+    this.ctx.arc(x + 105, y + 25, 7, 0, 2 * Math.PI, false);
     this.ctx.fill();
   }
   drawText() {
     let { x, y } = this.PositionOnDetect();
     this.ctx.fillStyle = "#c2c2c2";
     this.ctx.font = "30px Arial";
-    this.ctx.fillText(":)", x + 20, y + 35, 100);
+    this.ctx.fillText(this.name, x + 20, y + 35, 100);
+  }
+  Initialize(e, rect, ofx, ofy) {
+    this.isDraging = true;
+    this.e = e;
+    this.rect = rect;
+    this.ofx = ofx;
+    this.ofy = ofy;
   }
   PositionOnDetect() {
     let x,

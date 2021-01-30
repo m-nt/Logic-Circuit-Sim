@@ -1,19 +1,31 @@
-import Gate from "/app/Chr.js";
+import Dots from "/app/dots.js";
+import UI from "/app/UiObj.js";
 var c = /** @type {HTMLCanvasElement} */ (document.getElementById("Main"));
 var ctx = c.getContext("2d");
 
 let HEIGHT = 550;
 let WIDTH = 1100;
 
-let f1 = new Gate(ctx, 50, 150);
+let u1 = new UI("AND", ctx, 50, 500, 100, 50);
+let u2 = new UI("NOT", ctx, 200, 500, 100, 50);
 
-let Hierarchy = [f1];
+let d1 = new Dots(ctx, 50, 150, 10);
+let d2 = new Dots(ctx, 150, 250, 10);
+
+let Hierarchy = [u1, u2, d1, d2];
 
 c.onmousemove = (e) => {
   Hierarchy.forEach((item) => {
-    if (item.isDraging) {
-      item.e = e;
-      item.rect = c.getBoundingClientRect();
+    if (item.type === "Gate") {
+      if (item.isDraging) {
+        item.e = e;
+        item.rect = c.getBoundingClientRect();
+      }
+    } else if (item.type === "dot") {
+      if (item.draw) {
+        item.e = e;
+        item.rect = c.getBoundingClientRect();
+      }
     }
   });
 };
@@ -24,17 +36,23 @@ c.onmousedown = (e) => {
 
   Hierarchy.forEach((item) => {
     if (item.MouseCollision(MposX, MposY)) {
-      item.isDraging = true;
-      item.ofx = MposX - item.x;
-      item.ofy = MposY - item.y;
-      item.e = e;
-      item.rect = c.getBoundingClientRect();
+      if (item.type === "UI") {
+        Hierarchy.push(
+          item.Initialize(e, rect, MposX - item.x, MposY - item.y)
+        );
+      } else if (item.type === "Gate") {
+        item.Initialize(e, rect, MposX - item.x, MposY - item.y);
+      } else {
+        item.Initialize(e, rect);
+        console.log("initialized");
+      }
     }
   });
 };
 c.onmouseup = (e) => {
   Hierarchy.forEach((item) => {
     item.isDraging = false;
+    item.draw = false;
   });
 };
 
