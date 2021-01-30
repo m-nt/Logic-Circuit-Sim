@@ -1,33 +1,41 @@
 import Gate from "/app/Chr.js";
 var c = /** @type {HTMLCanvasElement} */ (document.getElementById("Main"));
 var ctx = c.getContext("2d");
-const rect = c.getBoundingClientRect();
 
 let HEIGHT = 550;
 let WIDTH = 1100;
 
-let f1 = new Gate(ctx, 50, 150, rect);
+let f1 = new Gate(ctx, 50, 150);
 
 let Hierarchy = [f1];
-function renderUI() {
-  Hierarchy.forEach((items) => {
-    items.drawUI();
-  });
-}
-function renderTexts() {
-  Hierarchy.forEach((items) => {
-    items.drawText();
-  });
-}
+
 c.onmousemove = (e) => {
-  Hierarchy[0].e = e;
-  Hierarchy[0].rect = rect;
+  Hierarchy.forEach((item) => {
+    if (item.isDraging) {
+      item.e = e;
+      item.rect = c.getBoundingClientRect();
+    }
+  });
 };
 c.onmousedown = (e) => {
-  Hierarchy[0].isDraging = true;
+  let rect = c.getBoundingClientRect();
+  let MposX = e.clientX - rect.x - 5.5;
+  let MposY = e.clientY - rect.y - 6;
+
+  Hierarchy.forEach((item) => {
+    if (item.MouseCollision(MposX, MposY)) {
+      item.isDraging = true;
+      item.ofx = MposX - item.x;
+      item.ofy = MposY - item.y;
+      item.e = e;
+      item.rect = c.getBoundingClientRect();
+    }
+  });
 };
 c.onmouseup = (e) => {
-  Hierarchy[0].isDraging = false;
+  Hierarchy.forEach((item) => {
+    item.isDraging = false;
+  });
 };
 
 c.height = HEIGHT;
@@ -35,8 +43,12 @@ c.width = WIDTH;
 
 function Render_Pipeline() {
   ctx.clearRect(0, 0, c.width, c.height);
-  renderUI();
-  renderTexts();
+  Hierarchy.forEach((items) => {
+    items.drawUI();
+  });
+  Hierarchy.forEach((items) => {
+    items.drawText();
+  });
   requestAnimationFrame(Render_Pipeline);
 }
 Render_Pipeline();
