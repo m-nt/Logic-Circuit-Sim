@@ -1,8 +1,10 @@
-import Gate from "/app/Chr.js";
+import AND from "/app/AND.js";
+import NOT from "/app/NOT.js";
+
 class UI {
   constructor(name, ctx, x, y, w, h) {
     this.type = "UI";
-    this.name = name || "none";
+    this.name = name;
     this.x = x;
     this.y = y;
     this.w = w;
@@ -10,17 +12,11 @@ class UI {
     this.ctx = /** @type {CanvasRenderingContext2D} */ (ctx);
   }
   Initialize(e, rect, ofx, ofy) {
-    return new Gate(
-      this.ctx,
-      this.x,
-      this.y,
-      true,
-      this.name,
-      e,
-      rect,
-      ofx,
-      ofy
-    );
+    if (this.name === "AND") {
+      return new AND(this.ctx, this.x, this.y, true, e, rect, ofx, ofy);
+    } else {
+      return new NOT(this.ctx, this.x, this.y, true, e, rect, ofx, ofy);
+    }
   }
   drawUI() {
     let x = this.x;

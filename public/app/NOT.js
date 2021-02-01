@@ -1,7 +1,10 @@
-class Gate {
-  constructor(ctx, x, y, isDraging, name, e, rect, ofx, ofy) {
+class NOT {
+  constructor(ctx, x, y, isDraging, e, rect, ofx, ofy) {
     this.type = "Gate";
-    this.name = name || "none";
+    this.name = "NOT";
+    this.input = { a: false };
+    this.output = { o: false };
+    this.color = { on: "#80c973", of: "#a0a6a8" };
     this.x = x;
     this.y = y;
     this.w = 100;
@@ -13,20 +16,33 @@ class Gate {
     this.rect = rect || null;
     this.e = e || null;
   }
+  AndFunction() {
+    if (this.input.a) {
+      this.output.o = false;
+    } else {
+      this.output.o = true;
+    }
+  }
   drawUI() {
+    this.AndFunction();
     let { x, y } = this.PositionOnDetect();
     this.ctx.fillStyle = "#4e5251";
     this.ctx.fillRect(x, y, this.w, this.h);
-    this.ctx.fillStyle = "#a0a6a8";
+
     this.ctx.beginPath();
-    this.ctx.arc(x - 5, y + 12, 7, 0, 2 * Math.PI, false);
+    if (this.input.a) {
+      this.ctx.fillStyle = this.color.on;
+    } else {
+      this.ctx.fillStyle = this.color.of;
+    }
+    this.ctx.arc(x - 5, y + 25, 7, 0, 2 * Math.PI, false);
     this.ctx.fill();
     this.ctx.beginPath();
-    this.ctx.fillStyle = "#a0a6a8";
-    this.ctx.arc(x - 5, y + 37, 7, 0, 2 * Math.PI, false);
-    this.ctx.fill();
-    this.ctx.beginPath();
-    this.ctx.fillStyle = "#a0a6a8";
+    if (this.output.o) {
+      this.ctx.fillStyle = this.color.on;
+    } else {
+      this.ctx.fillStyle = this.color.of;
+    }
     this.ctx.arc(x + 105, y + 25, 7, 0, 2 * Math.PI, false);
     this.ctx.fill();
   }
@@ -60,8 +76,8 @@ class Gate {
   }
   MouseCollision(MposX, MposY) {
     /* console.log(
-      `MposX: ${MposX}, x: ${this.x}, w: ${this.w}\nMposY: ${MposY}, y: ${this.y}, h: ${this.h}`
-    ); */
+        `MposX: ${MposX}, x: ${this.x}, w: ${this.w}\nMposY: ${MposY}, y: ${this.y}, h: ${this.h}`
+      ); */
     if (
       MposX > this.x &&
       MposX < this.x + this.w &&
@@ -75,4 +91,4 @@ class Gate {
   }
 }
 
-export default Gate;
+export default NOT;
