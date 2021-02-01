@@ -50,9 +50,22 @@ c.onmousedown = (e) => {
   });
 };
 c.onmouseup = (e) => {
+  let rect = c.getBoundingClientRect();
+  let MposX = e.clientX - rect.x - 5.5;
+  let MposY = e.clientY - rect.y - 6;
+
   Hierarchy.forEach((item) => {
     item.isDraging = false;
-    item.draw = false;
+    if (item.type === "dot") {
+      if (item.MouseCollision(MposX, MposY)) {
+        // do stuff when we cach the input
+        console.log("collisin detected in mouseup for dots");
+        item.draw = false;
+      } else {
+        item.zeroDraw();
+        console.log("zeroDraw");
+      }
+    }
   });
 };
 
